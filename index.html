@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>MegaKnight Market — Футуристический интернет-магазин электроники</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <div class="header__logo" aria-label="MegaKnight Market">
+        <span class="logo__mark">MK</span>
+        <span class="logo__text">MegaKnight <span class="logo__highlight">Market</span></span>
+      </div>
+
+      <form class="header__search" id="search-form" novalidate>
+        <label class="visually-hidden" for="search-input">Поиск по каталогу</label>
+        <div class="search__wrapper">
+          <i class="fas fa-search search-icon"></i>
+          <input
+            type="search"
+            id="search-input"
+            name="query"
+            placeholder="Поиск: смартфон, наушники..."
+            required
+            minlength="2"
+          />
+        </div>
+        <button type="submit" class="btn btn--primary btn-glow">Найти</button>
+        <p class="form-error" id="search-error" aria-live="polite"></p>
+      </form>
+
+      <div class="header__actions">
+        <button class="icon-btn header__user" aria-label="Профиль пользователя">
+          <i class="fas fa-user-astronaut"></i>
+        </button>
+
+        <button
+          class="icon-btn header__cart"
+          id="cart-button"
+          aria-label="Открыть корзину"
+          aria-haspopup="dialog"
+        >
+          <i class="fas fa-shopping-bag"></i>
+          <span class="cart-counter" id="cart-count" aria-live="polite">0</span>
+        </button>
+
+        <button
+          class="icon-btn header__burger"
+          id="burger-button"
+          aria-label="Открыть меню"
+          aria-expanded="false"
+          aria-controls="main-nav"
+        >
+          <span class="burger-line"></span>
+          <span class="burger-line"></span>
+          <span class="burger-line"></span>
+        </button>
+      </div>
+    </header>
+
+    <nav class="nav" id="main-nav" aria-label="Основная навигация">
+      <ul class="nav__list">
+        <li class="nav__item nav__item--has-dropdown">
+          <button class="nav__link nav__dropdown-toggle" type="button">
+            <i class="fas fa-th-large"></i> Каталог
+          </button>
+          <ul class="nav__dropdown">
+            <li><a href="#" class="nav__dropdown-link" data-category="smartphone"><i class="fas fa-mobile-alt"></i> Смартфоны</a></li>
+            <li><a href="#" class="nav__dropdown-link" data-category="laptop"><i class="fas fa-laptop"></i> Ноутбуки</a></li>
+            <li><a href="#" class="nav__dropdown-link" data-category="audio"><i class="fas fa-headphones"></i> Аудио</a></li>
+            <li><a href="#" class="nav__dropdown-link" data-category="gaming"><i class="fas fa-gamepad"></i> Игровые</a></li>
+          </ul>
+        </li>
+        <li class="nav__item"><a href="#featured" class="nav__link"><i class="fas fa-fire"></i> Хиты продаж</a></li>
+        <li class="nav__item"><a href="#catalog" class="nav__link"><i class="fas fa-box-open"></i> Каталог</a></li>
+        <li class="nav__item"><a href="#footer" class="nav__link"><i class="fas fa-phone-alt"></i> Контакты</a></li>
+      </ul>
+    </nav>
+
+    <main class="layout">
+      <section id="banner" class="banner" aria-label="Промо акции">
+        <div class="banner__content">
+          <h1 class="neon-text">MegaKnight Market</h1>
+          <p class="banner__subtitle">Эксклюзивные гаджеты будущего уже здесь</p>
+          <p class="banner__description">Скидки до 40% на нейронаушники и голографические дисплеи только этой недели.</p>
+          <button class="btn btn--primary btn-glow btn-pulse" id="promo-button" type="button">
+            <i class="fas fa-bolt"></i> Перейти к акциям
+          </button>
+        </div>
+        <div class="banner__image" aria-hidden="true">
+          <div class="hologram-effect">
+            <div class="hologram-line"></div>
+            <div class="hologram-line"></div>
+            <div class="hologram-line"></div>
+          </div>
+          <div class="banner__device">
+            <div class="device-screen"></div>
+          </div>
+          <span class="banner__tag glow">NEW</span>
+        </div>
+      </section>
+
+      <aside class="filters" aria-label="Фильтры каталога">
+        <h2 class="filters__title"><i class="fas fa-sliders-h"></i> Фильтр</h2>
+
+        <form id="filters-form" class="filters__form">
+          <fieldset class="filters__group">
+            <legend><i class="fas fa-tag"></i> Цена, ₽</legend>
+            <div class="filters__range">
+              <label>
+                От
+                <input type="number" id="price-min" name="priceMin" min="0" step="500" value="0" class="input-glow" />
+              </label>
+              <label>
+                До
+                <input type="number" id="price-max" name="priceMax" min="0" step="500" value="200000" class="input-glow" />
+              </label>
+            </div>
+            <div class="range-slider">
+              <div class="range-track"></div>
+              <input type="range" id="range-min" min="0" max="200000" value="0" class="range-min" />
+              <input type="range" id="range-max" min="0" max="200000" value="200000" class="range-max" />
+            </div>
+          </fieldset>
+
+          <fieldset class="filters__group">
+            <legend><i class="fas fa-copyright"></i> Бренд</legend>
+            <label class="filters__checkbox">
+              <input type="checkbox" name="brand" value="KnightPhone" checked />
+              <span class="checkbox-custom"></span>
+              KnightPhone
+            </label>
+            <label class="filters__checkbox">
+              <input type="checkbox" name="brand" value="MegaTech" checked />
+              <span class="checkbox-custom"></span>
+              MegaTech
+            </label>
+            <label class="filters__checkbox">
+              <input type="checkbox" name="brand" value="NeuroGear" checked />
+              <span class="checkbox-custom"></span>
+              NeuroGear
+            </label>
+          </fieldset>
+
+          <fieldset class="filters__group">
+            <legend><i class="fas fa-star"></i> Рейтинг</legend>
+            <div class="rating-select">
+              <label>
+                Минимум
+                <select id="rating-min" name="ratingMin" class="select-glow">
+                  <option value="0" selected>Любой</option>
+                  <option value="3">3★ и выше</option>
+                  <option value="4">4★ и выше</option>
+                  <option value="4.5">4.5★ и выше</option>
+                </select>
+              </label>
+            </div>
+            <div class="rating-stars">
+              <button type="button" class="star-btn" data-rating="3">★★★☆☆</button>
+              <button type="button" class="star-btn" data-rating="4">★★★★☆</button>
+              <button type="button" class="star-btn active" data-rating="4.5">★★★★★</button>
+            </div>
+          </fieldset>
+
+          <div class="filters__actions">
+            <button type="submit" class="btn btn--primary btn-glow filters__submit">
+              <i class="fas fa-filter"></i> Применить
+            </button>
+            <button type="button" class="btn btn--ghost" id="reset-filters">
+              <i class="fas fa-redo"></i> Сбросить
+            </button>
+          </div>
+        </form>
+      </aside>
+
+      <section id="categories" class="categories">
+        <h2><i class="fas fa-grid"></i> Категории</h2>
+        <div class="categories__grid">
+          <button class="category-card glow-hover" data-category="smartphone" type="button">
+            <i class="fas fa-mobile-alt"></i>
+            <span>Смартфоны</span>
+          </button>
+          <button class="category-card glow-hover" data-category="laptop" type="button">
+            <i class="fas fa-laptop"></i>
+            <span>Ноутбуки</span>
+          </button>
+          <button class="category-card glow-hover" data-category="audio" type="button">
+            <i class="fas fa-headphones"></i>
+            <span>Наушники и аудио</span>
+          </button>
+          <button class="category-card glow-hover" data-category="gaming" type="button">
+            <i class="fas fa-gamepad"></i>
+            <span>Игровые устройства</span>
+          </button>
+          <button class="category-card glow-hover" data-category="vr" type="button">
+            <i class="fas fa-vr-cardboard"></i>
+            <span>VR/AR</span>
+          </button>
+          <button class="category-card glow-hover" data-category="wearable" type="button">
+            <i class="fas fa-smartwatch"></i>
+            <span>Умные часы</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="featured" class="featured">
+        <div class="section-header">
+          <h2><i class="fas fa-fire"></i> Популярные товары</h2>
+          <a href="#catalog" class="view-all">Смотреть все <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="products-grid" id="featured-grid">
+        </div>
+      </section>
+
+      <section id="catalog" class="catalog">
+        <div class="section-header">
+          <div class="catalog__header">
+            <h2><i class="fas fa-box-open"></i> Каталог</h2>
+            <p class="catalog__count" id="catalog-count">Найдено товаров: 10</p>
+          </div>
+          <div class="sort-controls">
+            <label for="sort-select">Сортировка:</label>
+            <select id="sort-select" class="select-glow">
+              <option value="default">По умолчанию</option>
+              <option value="price-asc">Цена: по возрастанию</option>
+              <option value="price-desc">Цена: по убыванию</option>
+              <option value="rating">По рейтингу</option>
+            </select>
+          </div>
+        </div>
+        <div class="products-grid" id="catalog-grid" aria-live="polite">
+        </div>
+        <div class="load-more">
+          <button class="btn btn--ghost" id="load-more">
+            <i class="fas fa-sync"></i> Загрузить еще
+          </button>
+        </div>
+      </section>
+    </main>
+
+
+    <footer id="footer" class="footer">
+      <div class="footer__content">
+        <div class="footer__col">
+          <div class="footer__logo">
+            <span class="logo__mark">MK</span>
+            <span class="logo__text">MegaKnight <span class="logo__highlight">Market</span></span>
+          </div>
+          <p class="footer__description">Интернет-магазин гаджетов будущего. Экспресс-доставка по РФ и СНГ.</p>
+          <div class="social-links">
+            <a href="" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+            <a href="https://www.youtube.com/@MrMarmok" aria-label="VK"><i class="fab fa-vk"></i></a>
+            <a href="https://www.youtube.com/@MrMarmok" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h3><i class="fas fa-info-circle"></i> Информация</h3>
+          <ul>
+            <li><a href="#"><i class="fas fa-store"></i> О магазине</a></li>
+            <li><a href="#"><i class="fas fa-shipping-fast"></i> Оплата и доставка</a></li>
+            <li><a href="#"><i class="fas fa-shield-alt"></i> Гарантия и возврат</a></li>
+            <li><a href="#"><i class="fas fa-newspaper"></i> Блог</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h3><i class="fas fa-headset"></i> Контакты</h3>
+          <ul class="contact-list">
+            <li><i class="fas fa-phone-alt"></i> +7 (917) 535-83-56</li>
+            <li><i class="fas fa-envelope"></i> support@megaknight.ru</li>
+            <li><i class="fas fa-map-marker-alt"></i> Москва, ул. Технологическая, 42</li>
+          </ul>
+          <div class="payment-methods">
+            <i class="fab fa-cc-visa"></i>
+            <i class="fab fa-cc-mastercard"></i>
+            <i class="fab fa-cc-paypal"></i>
+            <i class="fas fa-qrcode"></i>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h3><i class="fas fa-paper-plane"></i> Подписка на акции</h3>
+          <p>Получайте уведомления о новинках и эксклюзивных скидках.</p>
+          <form id="subscribe-form" novalidate>
+            <label class="visually-hidden" for="subscribe-email">
+              Введите email для подписки
+            </label>
+            <div class="subscribe-input">
+              <input
+                type="email"
+                id="subscribe-email"
+                placeholder="your@email.com"
+                required
+                class="input-glow"
+              />
+              <button type="submit" class="btn btn--primary btn-glow">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+            <p class="form-error" id="subscribe-error" aria-live="polite"></p>
+          </form>
+          <div class="newsletter-note">
+            <i class="fas fa-lock"></i> Ваши данные защищены
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2023 MegaKnight Market. Все права защищены.</p>
+        <div class="footer-links">
+          <a href="#">Политика конфиденциальности</a>
+          <a href="#">Пользовательское соглашение</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div
+    class="cart-modal"
+    id="cart-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="cart-title"
+    aria-hidden="true"
+  >
+    <div class="cart-modal__backdrop" id="cart-backdrop"></div>
+    <div class="cart-modal__content">
+      <header class="cart-modal__header">
+        <h2 id="cart-title"><i class="fas fa-shopping-bag"></i> Корзина</h2>
+        <button class="icon-btn cart-modal__close" id="cart-close" aria-label="Закрыть корзину">
+          <i class="fas fa-times"></i>
+        </button>
+      </header>
+
+      <div class="cart-modal__body" id="cart-items">
+        <div class="empty-cart">
+          <i class="fas fa-shopping-bag fa-3x"></i>
+          <p>Корзина пуста. Добавьте товары из каталога.</p>
+        </div>
+      </div>
+
+      <footer class="cart-modal__footer">
+        <div class="cart-modal__total">
+          <span>Итого:</span>
+          <span id="cart-total">0 ₽</span>
+        </div>
+        <button class="btn btn--primary btn-glow btn-pulse" id="checkout-button" type="button">
+          <i class="fas fa-lock"></i> Оформить заказ
+        </button>
+      </footer>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
