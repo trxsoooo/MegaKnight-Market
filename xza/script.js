@@ -1,6 +1,4 @@
-// ===== ДАННЫЕ ТОВАРОВ =====
-const products = [
-  {
+const products = [{
     id: 1,
     title: "Смартфон KnightPhone X15 128GB",
     brand: "KnightPhone",
@@ -8,7 +6,7 @@ const products = [
     price: 69990,
     rating: 4.8,
     featured: true,
-    image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&h=300&fit=crop"
+    image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&h=300&fit=crop&q=80"
   },
   {
     id: 2,
@@ -18,7 +16,7 @@ const products = [
     price: 34990,
     rating: 4.3,
     featured: false,
-    image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=300&h=300&fit=crop"
+    image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=300&h=300&fit=crop&q=80"
   },
   {
     id: 3,
@@ -28,7 +26,7 @@ const products = [
     price: 129990,
     rating: 4.9,
     featured: true,
-    image: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=300&h=300&fit=crop"
+    image: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=300&h=300&fit=crop&q=80"
   },
   {
     id: 4,
@@ -38,7 +36,7 @@ const products = [
     price: 99990,
     rating: 4.7,
     featured: true,
-    image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300&h=300&fit=crop"
+    image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300&h=300&fit=crop&q=80"
   },
   {
     id: 5,
@@ -48,7 +46,7 @@ const products = [
     price: 32990,
     rating: 4.6,
     featured: true,
-    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop"
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop&q=80"
   },
   {
     id: 6,
@@ -58,7 +56,7 @@ const products = [
     price: 69990,
     rating: 4.9,
     featured: true,
-    image: "https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=300&h=300&fit=crop"
+    image: "https://images.unsplash.com/photo-1593305841991-05c297ba4575?w=300&h=300&fit=crop&q=80"
   },
   {
     id: 7,
@@ -68,7 +66,7 @@ const products = [
     price: 12990,
     rating: 4.5,
     featured: false,
-    image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=300&h=300&fit=crop"
+    image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=300&h=300&fit=crop&q=80"
   },
   {
     id: 8,
@@ -78,7 +76,7 @@ const products = [
     price: 9990,
     rating: 4.2,
     featured: false,
-    image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300&h=300&fit=crop"
+    image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=300&h=300&fit=crop&q=80"
   },
   {
     id: 9,
@@ -88,7 +86,7 @@ const products = [
     price: 45990,
     rating: 4.7,
     featured: true,
-    image: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=300&h=300&fit=crop"
+    image: "https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=300&h=300&fit=crop&q=80"
   },
   {
     id: 10,
@@ -98,21 +96,21 @@ const products = [
     price: 24990,
     rating: 4.4,
     featured: false,
-    image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=300&h=300&fit=crop"
+    image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=300&h=300&fit=crop&q=80"
   }
 ];
 
-// ===== СОСТОЯНИЕ =====
+
 let filteredProducts = [...products];
 let visibleProducts = 8;
-const cart = new Map(); // key: product.id, value: { product, qty }
+const cart = new Map();
 
-// ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
+
 const formatPrice = (value) =>
-  new Intl.NumberFormat("ru-RU", { 
-    style: "currency", 
-    currency: "RUB", 
-    maximumFractionDigits: 0 
+  new Intl.NumberFormat("ru-RU", {
+    style: "currency",
+    currency: "RUB",
+    maximumFractionDigits: 0
   }).format(value);
 
 function renderProducts() {
@@ -120,24 +118,29 @@ function renderProducts() {
   const featuredGrid = document.getElementById("featured-grid");
   const countEl = document.getElementById("catalog-count");
 
+
   catalogGrid.innerHTML = "";
   featuredGrid.innerHTML = "";
 
-  // Показываем только часть товаров для ленивой загрузки
+
   const productsToShow = filteredProducts.slice(0, visibleProducts);
+
 
   productsToShow.forEach((product) => {
     const card = createProductCard(product);
     catalogGrid.appendChild(card);
-
-    if (product.featured) {
-      const cardFeatured = createProductCard(product);
-      featuredGrid.appendChild(cardFeatured);
-    }
   });
 
+  // Рендерим избранные товары
+  const featuredProducts = products.filter(p => p.featured);
+  featuredProducts.forEach((product) => {
+    const card = createProductCard(product);
+    featuredGrid.appendChild(card);
+  });
+
+  // Обновляем счетчик
   countEl.textContent = `Найдено товаров: ${filteredProducts.length}`;
-  
+
   // Показываем/скрываем кнопку "Загрузить еще"
   const loadMoreBtn = document.getElementById("load-more");
   if (visibleProducts >= filteredProducts.length) {
@@ -177,30 +180,36 @@ function createProductCard(product) {
   `;
 
   const btn = card.querySelector(".product-card__btn");
-  btn.addEventListener("click", () => addToCart(product.id));
-  
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    addToCart(product.id);
+  });
+
   // Анимация при наведении
   card.addEventListener('mouseenter', () => {
     card.style.transform = 'translateY(-10px)';
   });
-  
+
   card.addEventListener('mouseleave', () => {
     card.style.transform = 'translateY(0)';
   });
-  
+
+  // Добавляем анимацию появления
+  setTimeout(() => {
+    card.classList.add('animate-in');
+  }, 100);
+
   return card;
 }
 
 // ===== РАБОТА С ФИЛЬТРАМИ =====
 function applyFilters() {
   const priceMin = Number(document.getElementById("price-min").value || 0);
-  const priceMax = Number(document.getElementById("price-max").value || 9999999);
+  const priceMax = Number(document.getElementById("price-max").value || 200000);
   const ratingMin = Number(document.getElementById("rating-min").value || 0);
 
-  const brandCheckboxes = document.querySelectorAll('input[name="brand"]');
-  const activeBrands = Array.from(brandCheckboxes)
-    .filter((c) => c.checked)
-    .map((c) => c.value);
+  const brandCheckboxes = document.querySelectorAll('input[name="brand"]:checked');
+  const activeBrands = Array.from(brandCheckboxes).map((c) => c.value);
 
   filteredProducts = products.filter((p) => {
     const byBrand = activeBrands.length ? activeBrands.includes(p.brand) : true;
@@ -211,7 +220,7 @@ function applyFilters() {
 
   // Применяем сортировку
   applySorting();
-  
+
   visibleProducts = 8;
   renderProducts();
 }
@@ -220,7 +229,11 @@ function resetFilters() {
   document.getElementById("price-min").value = 0;
   document.getElementById("price-max").value = 200000;
   document.getElementById("rating-min").value = 0;
-  
+
+  // Сбрасываем слайдеры
+  document.getElementById("range-min").value = 0;
+  document.getElementById("range-max").value = 200000;
+
   // Сбрасываем звезды
   document.querySelectorAll('.star-btn').forEach(btn => {
     btn.classList.remove('active');
@@ -238,8 +251,8 @@ function resetFilters() {
 function applySorting() {
   const sortSelect = document.getElementById("sort-select");
   const sortValue = sortSelect.value;
-  
-  switch(sortValue) {
+
+  switch (sortValue) {
     case 'price-asc':
       filteredProducts.sort((a, b) => a.price - b.price);
       break;
@@ -251,7 +264,7 @@ function applySorting() {
       break;
     default:
       // Сбрасываем к оригинальному порядку
-      const originalOrder = products.filter(p => 
+      const originalOrder = products.filter(p =>
         filteredProducts.some(fp => fp.id === p.id)
       );
       filteredProducts = originalOrder;
@@ -268,10 +281,37 @@ function setupCategoryFilters() {
       visibleProducts = 8;
       applySorting();
       renderProducts();
-      
+
       // Подсветка активной категории
       categoryButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+    });
+  });
+
+  // Обработка кликов по категориям в дропдауне
+  const dropdownLinks = document.querySelectorAll('.nav__dropdown-link[data-category]');
+  dropdownLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const category = link.dataset.category;
+      filteredProducts = products.filter((p) => p.category === category);
+      visibleProducts = 8;
+      applySorting();
+      renderProducts();
+
+      // Подсветка активной категории
+      categoryButtons.forEach(b => b.classList.remove('active'));
+      const targetBtn = document.querySelector(`.category-card[data-category="${category}"]`);
+      if (targetBtn) {
+        targetBtn.classList.add('active');
+      }
+
+      // Закрываем дропдаун на мобильных
+      if (window.innerWidth <= 768) {
+        const dropdown = link.closest('.nav__dropdown');
+        const dropdownParent = dropdown.closest('.nav__item--has-dropdown');
+        dropdownParent.classList.remove('active');
+      }
     });
   });
 }
@@ -289,7 +329,10 @@ function addToCart(productId) {
   if (cart.has(productId)) {
     cart.get(productId).qty += 1;
   } else {
-    cart.set(productId, { product, qty: 1 });
+    cart.set(productId, {
+      product,
+      qty: 1
+    });
   }
 
   animateCart();
@@ -301,7 +344,10 @@ function updateCartUI() {
   // Счетчик
   let totalQty = 0;
   let totalSum = 0;
-  cart.forEach(({ product, qty }) => {
+  cart.forEach(({
+    product,
+    qty
+  }) => {
     totalQty += qty;
     totalSum += product.price * qty;
   });
@@ -320,7 +366,10 @@ function updateCartUI() {
     return;
   }
 
-  cart.forEach(({ product, qty }) => {
+  cart.forEach(({
+    product,
+    qty
+  }) => {
     const itemEl = document.createElement("div");
     itemEl.className = "cart-item";
     itemEl.dataset.id = product.id;
@@ -336,13 +385,16 @@ function updateCartUI() {
         <button class="cart-item__qty-btn" data-action="dec" aria-label="Уменьшить количество">–</button>
         <span class="cart-item__qty">${qty}</span>
         <button class="cart-item__qty-btn" data-action="inc" aria-label="Увеличить количество">+</button>
-        <span class="cart-item__remove" data-action="remove" role="button" tabindex="0">убрать</span>
+        <button class="cart-item__remove" data-action="remove">убрать</button>
       </div>
     `;
 
     itemEl.addEventListener("click", (e) => {
       const action = e.target.dataset.action;
       if (!action) return;
+
+      e.stopPropagation();
+
       if (action === "inc") {
         cart.get(product.id).qty += 1;
       } else if (action === "dec") {
@@ -366,6 +418,10 @@ function animateCart() {
 }
 
 function showNotification(message) {
+  // Удаляем старые уведомления
+  const oldNotifications = document.querySelectorAll('.notification');
+  oldNotifications.forEach(n => n.remove());
+
   // Создаем уведомление
   const notification = document.createElement('div');
   notification.className = 'notification';
@@ -373,49 +429,14 @@ function showNotification(message) {
     <i class="fas fa-check-circle"></i>
     <span>${message}</span>
   `;
-  
-  // Стили для уведомления
-  notification.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(10, 10, 26, 0.95);
-    border: 1px solid var(--border-color);
-    border-left: 5px solid var(--success);
-    color: white;
-    padding: 15px 20px;
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    box-shadow: var(--shadow-glow);
-    z-index: 10000;
-    animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s;
-    animation-fill-mode: forwards;
-  `;
-  
-  // Добавляем стили для анимации
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes slideIn {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-    @keyframes fadeOut {
-      from { opacity: 1; }
-      to { opacity: 0; }
-    }
-  `;
-  document.head.appendChild(style);
-  
+
   document.body.appendChild(notification);
-  
+
   // Удаляем уведомление через 3 секунды
   setTimeout(() => {
     if (notification.parentNode) {
       notification.parentNode.removeChild(notification);
     }
-    document.head.removeChild(style);
   }, 3000);
 }
 
@@ -453,7 +474,8 @@ document.addEventListener("keydown", (e) => {
 const burgerButton = document.getElementById("burger-button");
 const nav = document.getElementById("main-nav");
 
-burgerButton.addEventListener("click", () => {
+burgerButton.addEventListener("click", (e) => {
+  e.stopPropagation();
   const isOpen = nav.classList.toggle("nav--open");
   burgerButton.setAttribute("aria-expanded", String(isOpen));
 });
@@ -465,6 +487,19 @@ document.addEventListener('click', (e) => {
     burgerButton.setAttribute('aria-expanded', 'false');
   }
 });
+
+// Обработка дропдауна на мобильных
+const dropdownToggle = document.querySelector('.nav__dropdown-toggle');
+if (dropdownToggle) {
+  dropdownToggle.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      e.stopPropagation();
+      const dropdownParent = dropdownToggle.closest('.nav__item--has-dropdown');
+      dropdownParent.classList.toggle('active');
+    }
+  });
+}
 
 // ===== ВАЛИДАЦИЯ ФОРМ =====
 // Поиск
@@ -481,14 +516,21 @@ searchForm.addEventListener("submit", (e) => {
     return;
   }
   searchError.textContent = "";
-  // Фильтрация по названию и описанию
+
+  // Фильтрация по названию и бренду
   filteredProducts = products.filter((p) =>
     p.title.toLowerCase().includes(value.toLowerCase()) ||
     p.brand.toLowerCase().includes(value.toLowerCase())
   );
+
   visibleProducts = 8;
   applySorting();
   renderProducts();
+
+  // Прокручиваем к каталогу
+  document.getElementById('catalog').scrollIntoView({
+    behavior: 'smooth'
+  });
 });
 
 // Подписка
@@ -500,16 +542,16 @@ subscribeForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const value = subscribeEmail.value.trim();
 
-  if (!value || !value.includes("@") || !value.includes(".")) {
+  if (!value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
     subscribeError.textContent = "Введите корректный email.";
     subscribeError.style.color = "var(--error)";
     return;
   }
-  
-  subscribeError.textContent = "Готово! Вы подписаны на акции.";
+
+  subscribeError.textContent = "Готово! Вы подписались на акции.";
   subscribeError.style.color = "var(--success)";
   subscribeEmail.value = "";
-  
+
   // Показываем уведомление
   showNotification("Вы успешно подписались на рассылку!");
 });
@@ -539,20 +581,28 @@ const loadMoreBtn = document.getElementById("load-more");
 loadMoreBtn.addEventListener("click", () => {
   visibleProducts += 4;
   renderProducts();
-  
+
   // Плавная прокрутка к новым товарам
-  const catalogSection = document.getElementById('catalog');
-  catalogSection.scrollIntoView({ behavior: 'smooth' });
+  const lastCard = document.querySelector('#catalog-grid .product-card:last-child');
+  if (lastCard) {
+    lastCard.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest'
+    });
+  }
 });
 
 // Кнопка "Оформить заказ"
 const checkoutButton = document.getElementById("checkout-button");
 checkoutButton.addEventListener("click", () => {
   if (cart.size === 0) {
-    alert("Корзина пуста. Добавьте товары.");
+    showNotification("Корзина пуста. Добавьте товары.");
   } else {
-    const total = Array.from(cart.values()).reduce((sum, {product, qty}) => sum + product.price * qty, 0);
-    alert(`Заказ оформлен на сумму ${formatPrice(total)}! Спасибо за покупку в MegaKnight Market!`);
+    const total = Array.from(cart.values()).reduce((sum, {
+      product,
+      qty
+    }) => sum + product.price * qty, 0);
+    showNotification(`Заказ оформлен на сумму ${formatPrice(total)}! Спасибо за покупку!`);
     cart.clear();
     updateCartUI();
     closeCart();
@@ -564,95 +614,120 @@ document.querySelectorAll('.star-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const rating = parseFloat(btn.dataset.rating);
     document.getElementById('rating-min').value = rating;
-    
+
     // Обновляем визуал
     document.querySelectorAll('.star-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    
+
     // Применяем фильтры
     applyFilters();
   });
 });
+
+// Кнопка промо-баннера
+const promoButton = document.getElementById('promo-button');
+if (promoButton) {
+  promoButton.addEventListener('click', () => {
+    // Фильтруем товары со скидками (все избранные)
+    filteredProducts = products.filter(p => p.featured);
+    visibleProducts = 8;
+    applySorting();
+    renderProducts();
+
+    // Прокручиваем к каталогу
+    document.getElementById('catalog').scrollIntoView({
+      behavior: 'smooth'
+    });
+  });
+}
 
 // ===== ИНИЦИАЛИЗАЦИЯ =====
 document.addEventListener("DOMContentLoaded", () => {
   // Инициализация состояния
   filteredProducts = [...products];
   visibleProducts = 8;
-  
+
   // Рендеринг
   renderProducts();
   setupCategoryFilters();
   updateCartUI();
-  
+
   // Инициализация слайдера цен
   initPriceSlider();
-  
-  // Анимация элементов при загрузке
-  animateOnScroll();
+
+  // Плавные ссылки
+  initSmoothScroll();
 });
 
 function initPriceSlider() {
   const priceMin = document.getElementById('price-min');
   const priceMax = document.getElementById('price-max');
-  const rangeMin = document.querySelector('.range-min');
-  const rangeMax = document.querySelector('.range-max');
-  
+  const rangeMin = document.getElementById('range-min');
+  const rangeMax = document.getElementById('range-max');
+
   function updatePriceInputs() {
     priceMin.value = rangeMin.value;
     priceMax.value = rangeMax.value;
   }
-  
+
+  function updateRangeSliders() {
+    rangeMin.value = priceMin.value;
+    rangeMax.value = priceMax.value;
+  }
+
   rangeMin.addEventListener('input', updatePriceInputs);
   rangeMax.addEventListener('input', updatePriceInputs);
-  
-  priceMin.addEventListener('input', () => {
-    rangeMin.value = priceMin.value;
-  });
-  
-  priceMax.addEventListener('input', () => {
-    rangeMax.value = priceMax.value;
-  });
+
+  priceMin.addEventListener('input', updateRangeSliders);
+  priceMax.addEventListener('input', updateRangeSliders);
+
+  // Инициализация значений
+  updatePriceInputs();
 }
 
-function animateOnScroll() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('animate-in');
+function initSmoothScroll() {
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        // Закрываем меню на мобильных
+        if (window.innerWidth <= 768 && nav.classList.contains('nav--open')) {
+          nav.classList.remove('nav--open');
+          burgerButton.setAttribute('aria-expanded', 'false');
+        }
+
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
       }
     });
-  }, {
-    threshold: 0.1
-  });
-  
-  // Наблюдаем за карточками товаров
-  document.querySelectorAll('.product-card').forEach(card => {
-    observer.observe(card);
   });
 }
 
-// Добавляем глобальные стили для анимаций
-const animationStyles = document.createElement('style');
-animationStyles.textContent = `
-  .product-card {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+// Обработка изменения размера окна
+window.addEventListener('resize', () => {
+  // На больших экранах всегда показываем меню
+  if (window.innerWidth > 768) {
+    nav.style.display = '';
+    nav.classList.remove('nav--open');
+    burgerButton.setAttribute('aria-expanded', 'false');
   }
-  
-  .product-card.animate-in {
-    opacity: 1;
-    transform: translateY(0);
+});
+
+// Предотвращаем всплытие событий
+document.addEventListener('click', (e) => {
+  // Закрываем дропдауны при клике вне
+  if (!e.target.closest('.nav__item--has-dropdown') && window.innerWidth > 768) {
+    document.querySelectorAll('.nav__dropdown').forEach(dropdown => {
+      dropdown.style.opacity = '0';
+      dropdown.style.visibility = 'hidden';
+      dropdown.style.transform = 'translateY(10px)';
+    });
   }
-  
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-  
-  .banner__device {
-    animation: float 6s ease-in-out infinite;
-  }
-`;
-document.head.appendChild(animationStyles);
+});
